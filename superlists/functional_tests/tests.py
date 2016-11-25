@@ -1,6 +1,7 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import time
 
 class NewVistiorTest(LiveServerTestCase):
     def setUp(self):
@@ -38,8 +39,12 @@ class NewVistiorTest(LiveServerTestCase):
         #提交表单后，被带到一个新的URL
         #页面刷新
         #代办事项处显示了“Buy peacock feathers”
-        inputbox.submit()#提交表单
-        self.browser.refresh() #刷新
+        inputbox.send_keys(Keys.ENTER)
+       # self.browser.refresh() #刷新
+        time.sleep(1)
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url,'/lists/.+') #需要等待页面加载完成  
+
         self.check_for_row_in_list_table('1:Buy peacock feathers')
 
         #页面中又显示了一个文本框，可以输入其他代办事项
@@ -49,11 +54,8 @@ class NewVistiorTest(LiveServerTestCase):
         
         #按回车提交表单，被带到一个新的URL
         #刷新页面
-        inputbox.send_keys(Keys.ENTER)
-        self.browser.refresh() #刷新
-        edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url,'/lists/.+')
-       
+        inputbox.submit()#提交表单
+        time.sleep(1)
         #页面刷新后，显示两个代办事项
         self.check_for_row_in_list_table('1:Buy peacock feathers')
         self.check_for_row_in_list_table('2:Use peacock feathers to make a fly')
@@ -67,7 +69,7 @@ class NewVistiorTest(LiveServerTestCase):
 
         #风访问了首页
         #页面中看不到艾的清单
-        self.browser.get(self.live.server_url)
+        self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers',page_text)
         self.assertNotIn('make a fly',page_text)
@@ -78,6 +80,7 @@ class NewVistiorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
 
         #风获得了他的唯一URL
+        time.sleep(1)
         francis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url,'/lists/.+')
         self.assertNotEqual(francis_list_url,edith_list_url)
