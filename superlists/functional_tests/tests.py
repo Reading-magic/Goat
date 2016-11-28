@@ -41,7 +41,7 @@ class NewVistiorTest(LiveServerTestCase):
         #代办事项处显示了“Buy peacock feathers”
         inputbox.send_keys(Keys.ENTER)
        # self.browser.refresh() #刷新
-        time.sleep(1)
+        time.sleep(3)
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url,'/lists/.+') #需要等待页面加载完成  
 
