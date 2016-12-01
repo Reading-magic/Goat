@@ -80,7 +80,7 @@ class NewVistiorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
 
         #风获得了他的唯一URL
-        time.sleep(1)
+        time.sleep(3)
         francis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url,'/lists/.+')
         self.assertNotEqual(francis_list_url,edith_list_url)
@@ -91,3 +91,24 @@ class NewVistiorTest(LiveServerTestCase):
         self.assertIn('Buy milk',page_text)
 
 		#两个人都很满意，去睡觉了
+
+    def test_layout_and_styling(self):
+		#艾访问首页
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024,768)
+
+		#她看到输入框完美地居中显示
+        inputbox=self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=5
+            )
+        #她新建一个清单，看到输入框仍完美地居中显示
+        inputbox.send_keys('testing\n')
+        inputbox=self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=5
+            )
