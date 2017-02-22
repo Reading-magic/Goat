@@ -1,13 +1,14 @@
-from django.test import LiveServerTestCase
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
-class NewVistiorTest(LiveServerTestCase):
+class NewVistiorTest(StaticLiveServerTestCase):
     def setUp(self):
 
     	# 艾打开了火狐浏览器
-        self.browser = webdriver.Firefox(executable_path = 'F:\Mozilla Firefox\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path='D:\Program Files\Mozilla Firefox\geckodriver.exe')
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -55,7 +56,7 @@ class NewVistiorTest(LiveServerTestCase):
         #按回车提交表单，被带到一个新的URL
         #刷新页面
         inputbox.submit()#提交表单
-        time.sleep(1)
+        time.sleep(3)
         #页面刷新后，显示两个代办事项
         self.check_for_row_in_list_table('1:Buy peacock feathers')
         self.check_for_row_in_list_table('2:Use peacock feathers to make a fly')
@@ -65,7 +66,7 @@ class NewVistiorTest(LiveServerTestCase):
         ##我们使用一个新的浏览器会话
         ##确保艾的信息不会从cookie中泄露
         self.browser.quit()
-        self.browser = webdriver.Firefox(executable_path = 'F:\Mozilla Firefox\geckodriver.exe')
+        self.browser = webdriver.Firefox(executable_path = 'D:\Program Files\Mozilla Firefox\geckodriver.exe')
 
         #风访问了首页
         #页面中看不到艾的清单
